@@ -1,0 +1,402 @@
+
+state 0
+	$accept: .statements $end 
+	statements: .    (1)
+
+	IDENT  shift 6
+	NOT  shift 5
+	LPAREN  shift 4
+	.  reduce 1 (src line 34)
+
+	statements  goto 1
+	statement  goto 2
+	attrName  goto 3
+
+state 1
+	$accept:  statements.$end 
+
+	$end  accept
+	.  error
+
+
+state 2
+	statements:  statement.statements 
+	statement:  statement.AND statement 
+	statement:  statement.OR statement 
+	statements: .    (1)
+
+	IDENT  shift 6
+	AND  shift 8
+	OR  shift 9
+	NOT  shift 5
+	LPAREN  shift 4
+	.  reduce 1 (src line 34)
+
+	statements  goto 7
+	statement  goto 2
+	attrName  goto 3
+
+state 3
+	statement:  attrName.PR 
+	statement:  attrName.EQ attrValue 
+	statement:  attrName.NE attrValue 
+	statement:  attrName.CO VALUE 
+	statement:  attrName.SW VALUE 
+	statement:  attrName.EW VALUE 
+	statement:  attrName.GT attrValue 
+	statement:  attrName.GE attrValue 
+	statement:  attrName.LT attrValue 
+	statement:  attrName.LE attrValue 
+	statement:  attrName.LBOXP statement RBOXP 
+
+	PR  shift 10
+	EQ  shift 11
+	NE  shift 12
+	CO  shift 13
+	SW  shift 14
+	EW  shift 15
+	GT  shift 16
+	GE  shift 17
+	LT  shift 18
+	LE  shift 19
+	LBOXP  shift 20
+	.  error
+
+
+state 4
+	statement:  LPAREN.statement RPAREN 
+
+	IDENT  shift 6
+	NOT  shift 5
+	LPAREN  shift 4
+	.  error
+
+	statement  goto 21
+	attrName  goto 3
+
+state 5
+	statement:  NOT.LPAREN statement RPAREN 
+
+	LPAREN  shift 22
+	.  error
+
+
+state 6
+	attrName:  IDENT.    (18)
+
+	.  reduce 18 (src line 112)
+
+
+state 7
+	statements:  statement statements.    (2)
+
+	.  reduce 2 (src line 42)
+
+
+state 8
+	statement:  statement AND.statement 
+
+	IDENT  shift 6
+	NOT  shift 5
+	LPAREN  shift 4
+	.  error
+
+	statement  goto 23
+	attrName  goto 3
+
+state 9
+	statement:  statement OR.statement 
+
+	IDENT  shift 6
+	NOT  shift 5
+	LPAREN  shift 4
+	.  error
+
+	statement  goto 24
+	attrName  goto 3
+
+state 10
+	statement:  attrName PR.    (3)
+
+	.  reduce 3 (src line 50)
+
+
+state 11
+	statement:  attrName EQ.attrValue 
+
+	TRUE  shift 27
+	FALSE  shift 28
+	NULL  shift 29
+	VALUE  shift 30
+	NUMBER  shift 26
+	.  error
+
+	attrValue  goto 25
+
+state 12
+	statement:  attrName NE.attrValue 
+
+	TRUE  shift 27
+	FALSE  shift 28
+	NULL  shift 29
+	VALUE  shift 30
+	NUMBER  shift 26
+	.  error
+
+	attrValue  goto 31
+
+state 13
+	statement:  attrName CO.VALUE 
+
+	VALUE  shift 32
+	.  error
+
+
+state 14
+	statement:  attrName SW.VALUE 
+
+	VALUE  shift 33
+	.  error
+
+
+state 15
+	statement:  attrName EW.VALUE 
+
+	VALUE  shift 34
+	.  error
+
+
+state 16
+	statement:  attrName GT.attrValue 
+
+	TRUE  shift 27
+	FALSE  shift 28
+	NULL  shift 29
+	VALUE  shift 30
+	NUMBER  shift 26
+	.  error
+
+	attrValue  goto 35
+
+state 17
+	statement:  attrName GE.attrValue 
+
+	TRUE  shift 27
+	FALSE  shift 28
+	NULL  shift 29
+	VALUE  shift 30
+	NUMBER  shift 26
+	.  error
+
+	attrValue  goto 36
+
+state 18
+	statement:  attrName LT.attrValue 
+
+	TRUE  shift 27
+	FALSE  shift 28
+	NULL  shift 29
+	VALUE  shift 30
+	NUMBER  shift 26
+	.  error
+
+	attrValue  goto 37
+
+state 19
+	statement:  attrName LE.attrValue 
+
+	TRUE  shift 27
+	FALSE  shift 28
+	NULL  shift 29
+	VALUE  shift 30
+	NUMBER  shift 26
+	.  error
+
+	attrValue  goto 38
+
+state 20
+	statement:  attrName LBOXP.statement RBOXP 
+
+	IDENT  shift 6
+	NOT  shift 5
+	LPAREN  shift 4
+	.  error
+
+	statement  goto 39
+	attrName  goto 3
+
+state 21
+	statement:  statement.AND statement 
+	statement:  statement.OR statement 
+	statement:  LPAREN statement.RPAREN 
+
+	AND  shift 8
+	OR  shift 9
+	RPAREN  shift 40
+	.  error
+
+
+state 22
+	statement:  NOT LPAREN.statement RPAREN 
+
+	IDENT  shift 6
+	NOT  shift 5
+	LPAREN  shift 4
+	.  error
+
+	statement  goto 41
+	attrName  goto 3
+
+state 23
+	statement:  statement.AND statement 
+	statement:  statement AND statement.    (13)
+	statement:  statement.OR statement 
+
+	OR  shift 9
+	.  reduce 13 (src line 91)
+
+
+state 24
+	statement:  statement.AND statement 
+	statement:  statement.OR statement 
+	statement:  statement OR statement.    (14)
+
+	.  reduce 14 (src line 95)
+
+
+state 25
+	statement:  attrName EQ attrValue.    (4)
+
+	.  reduce 4 (src line 55)
+
+
+state 26
+	attrValue:  NUMBER.    (19)
+
+	.  reduce 19 (src line 118)
+
+
+state 27
+	attrValue:  TRUE.    (20)
+
+	.  reduce 20 (src line 123)
+
+
+state 28
+	attrValue:  FALSE.    (21)
+
+	.  reduce 21 (src line 127)
+
+
+state 29
+	attrValue:  NULL.    (22)
+
+	.  reduce 22 (src line 131)
+
+
+state 30
+	attrValue:  VALUE.    (23)
+
+	.  reduce 23 (src line 135)
+
+
+state 31
+	statement:  attrName NE attrValue.    (5)
+
+	.  reduce 5 (src line 59)
+
+
+state 32
+	statement:  attrName CO VALUE.    (6)
+
+	.  reduce 6 (src line 63)
+
+
+state 33
+	statement:  attrName SW VALUE.    (7)
+
+	.  reduce 7 (src line 67)
+
+
+state 34
+	statement:  attrName EW VALUE.    (8)
+
+	.  reduce 8 (src line 71)
+
+
+state 35
+	statement:  attrName GT attrValue.    (9)
+
+	.  reduce 9 (src line 75)
+
+
+state 36
+	statement:  attrName GE attrValue.    (10)
+
+	.  reduce 10 (src line 79)
+
+
+state 37
+	statement:  attrName LT attrValue.    (11)
+
+	.  reduce 11 (src line 83)
+
+
+state 38
+	statement:  attrName LE attrValue.    (12)
+
+	.  reduce 12 (src line 87)
+
+
+state 39
+	statement:  statement.AND statement 
+	statement:  statement.OR statement 
+	statement:  attrName LBOXP statement.RBOXP 
+
+	AND  shift 8
+	OR  shift 9
+	RBOXP  shift 42
+	.  error
+
+
+state 40
+	statement:  LPAREN statement RPAREN.    (15)
+
+	.  reduce 15 (src line 99)
+
+
+state 41
+	statement:  statement.AND statement 
+	statement:  statement.OR statement 
+	statement:  NOT LPAREN statement.RPAREN 
+
+	AND  shift 8
+	OR  shift 9
+	RPAREN  shift 43
+	.  error
+
+
+state 42
+	statement:  attrName LBOXP statement RBOXP.    (17)
+
+	.  reduce 17 (src line 107)
+
+
+state 43
+	statement:  NOT LPAREN statement RPAREN.    (16)
+
+	.  reduce 16 (src line 103)
+
+
+27 terminals, 5 nonterminals
+24 grammar rules, 44/2000 states
+0 shift/reduce, 0 reduce/reduce conflicts reported
+54 working sets used
+memory: parser 21/30000
+39 extra closures
+78 shift entries, 1 exceptions
+15 goto entries
+7 entries saved by goto default
+Optimizer space used: output 56/30000
+56 table entries, 3 zero
+maximum spread: 26, maximum offset: 23

@@ -1,0 +1,141 @@
+
+state 0
+	$accept: .statements $end 
+	statements: .    (1)
+
+	IDENT  shift 4
+	NUMBER  shift 5
+	.  reduce 1 (src line 34)
+
+	statements  goto 1
+	statement  goto 2
+	expr  goto 3
+
+state 1
+	$accept:  statements.$end 
+
+	$end  accept
+	.  error
+
+
+state 2
+	statements:  statement.statements 
+	statement:  statement.AND statement 
+	statement:  statement.OR statement 
+	statements: .    (1)
+
+	IDENT  shift 4
+	NUMBER  shift 5
+	AND  shift 7
+	OR  shift 8
+	.  reduce 1 (src line 34)
+
+	statements  goto 6
+	statement  goto 2
+	expr  goto 3
+
+state 3
+	statement:  expr.    (3)
+
+	.  reduce 3 (src line 50)
+
+
+state 4
+	statement:  IDENT.PR 
+	statement:  IDENT.EQ IDENT 
+	statement:  IDENT.EQ NUMBER 
+	expr:  IDENT.    (10)
+
+	PR  shift 9
+	EQ  shift 10
+	.  reduce 10 (src line 82)
+
+
+state 5
+	expr:  NUMBER.    (9)
+
+	.  reduce 9 (src line 77)
+
+
+state 6
+	statements:  statement statements.    (2)
+
+	.  reduce 2 (src line 42)
+
+
+state 7
+	statement:  statement AND.statement 
+
+	IDENT  shift 4
+	NUMBER  shift 5
+	.  error
+
+	statement  goto 11
+	expr  goto 3
+
+state 8
+	statement:  statement OR.statement 
+
+	IDENT  shift 4
+	NUMBER  shift 5
+	.  error
+
+	statement  goto 12
+	expr  goto 3
+
+state 9
+	statement:  IDENT PR.    (6)
+
+	.  reduce 6 (src line 63)
+
+
+state 10
+	statement:  IDENT EQ.IDENT 
+	statement:  IDENT EQ.NUMBER 
+
+	IDENT  shift 13
+	NUMBER  shift 14
+	.  error
+
+
+state 11
+	statement:  statement.AND statement 
+	statement:  statement AND statement.    (4)
+	statement:  statement.OR statement 
+
+	OR  shift 8
+	.  reduce 4 (src line 55)
+
+
+state 12
+	statement:  statement.AND statement 
+	statement:  statement.OR statement 
+	statement:  statement OR statement.    (5)
+
+	.  reduce 5 (src line 59)
+
+
+state 13
+	statement:  IDENT EQ IDENT.    (7)
+
+	.  reduce 7 (src line 67)
+
+
+state 14
+	statement:  IDENT EQ NUMBER.    (8)
+
+	.  reduce 8 (src line 71)
+
+
+9 terminals, 4 nonterminals
+11 grammar rules, 15/2000 states
+0 shift/reduce, 0 reduce/reduce conflicts reported
+53 working sets used
+memory: parser 9/30000
+0 extra closures
+15 shift entries, 1 exceptions
+6 goto entries
+4 entries saved by goto default
+Optimizer space used: output 18/30000
+18 table entries, 1 zero
+maximum spread: 9, maximum offset: 9

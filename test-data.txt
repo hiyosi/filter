@@ -1,0 +1,52 @@
+ham-123 eq "(spam@example.com)"
+ham eq true
+ham eq false
+ham eq null
+ham eq 123
+ham_123 eq "aa"
+ham eq "山田 太郎"
+ham eq "!@#$%%^&*-=\_+|()[]{};':\",.<>/?"
+not (ham eq "spam")
+ham ne "spam"
+not (ham ne "spam")
+ham co "spam"
+not ( ham co "spam" )
+ham sw "spam"
+not ( ham sw "spam" )
+ham ew "spam"
+not ( ham ew "spam" )
+ham gt "spam"
+ham gt 123
+not ( ham gt "spam" )
+ham ge 150
+not ( ham ge "spam" )
+ham lt 200
+not ( ham lt "spam" )
+ham le 300
+not ( ham le "spam" )
+ham pr
+not ( ham pr )
+ham pr and ham eq "spam"
+not ( ham pr and ham eq "spam" )
+not ( ham pr and ham eq "spam" or ham lt 300 )
+userName eq "bjensen"
+name.familyName co "O'Malley"
+userName sw "J"
+title pr
+(title pr)
+meta.lastModified gt "2011-05-13T04:42:34Z"
+meta.lastModified ge "2011-05-13T04:42:34Z"
+meta.lastModified lt "2011-05-13T04:42:34Z"
+meta.lastModified le "2011-05-13T04:42:34Z"
+title pr and userType eq "Employee"
+title pr or userType eq "Intern"
+schemas eq "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"
+userType eq "Employee" and (emails co "example.com" or emails co "example.org")
+userType eq "Employee" and ( emails co "example.com" or emails co "example.org")
+userType eq "Employee" and (emails co "example.com" or emails co "example.org" )
+userType eq "Employee" and ( emails co "example.com" or emails co "example.org" )
+userType ne "Employee" and not ( emails co "example.com" or  emails co "example.org" )
+userType eq "Employee" and ( emails.type eq "work" )
+(ham eq "spam") and (foo co "bar")
+userType eq "Employee" and emails[type eq "work" and value co "@example.com"]
+emails[type eq "work" and value co "@example.com"] or ims[type eq "xmpp" and value co "@foo.com"]
