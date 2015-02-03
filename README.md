@@ -88,8 +88,8 @@ emails[type eq "work" and value co "@example.com"] or ims[type eq "xmpp" and val
 - result
 ```
 map[userName:bjensen]
-map[name.familyName:map[$regexp:{O'Malley }]]
-map[userName:map[$regexp:{^J }]]
+map[name.familyName:map[$regex:{O'Malley }]]
+map[userName:map[$regex:{^J }]]
 map[title:map[$exists:true]]
 map[title:map[$exists:true]]
 map[meta.lastModified:map[$gt:2011-05-13 04:42:34 +0000 UTC]]
@@ -99,14 +99,14 @@ map[meta.lastModified:map[$lte:2011-05-13 04:42:34 +0000 UTC]]
 map[$and:[map[title:map[$exists:true]] map[userType:Employee]]]
 map[$or:[map[title:map[$exists:true]] map[userType:Intern]]]
 map[schemas:urn:ietf:params:scim:schemas:extension:enterprise:2.0:User]
-map[$and:[map[userType:Employee] map[$or:[map[emails:map[$regexp:{example.com }]] map[emails:map[$regexp:{example.org }]]]]]]
-map[$and:[map[userType:Employee] map[$or:[map[emails:map[$regexp:{example.com }]] map[emails:map[$regexp:{example.org }]]]]]]
-map[$and:[map[userType:Employee] map[$or:[map[emails:map[$regexp:{example.com }]] map[emails:map[$regexp:{example.org }]]]]]]
-map[$and:[map[userType:Employee] map[$or:[map[emails:map[$regexp:{example.com }]] map[emails:map[$regexp:{example.org }]]]]]]
-map[$and:[map[userType:map[$ne:Employee]] map[$or:[map[emails:map[$not:map[$regexp:{example.com }]]] map[emails:map[$not:map[$regexp:{example.org }]]]]]]]
+map[$and:[map[userType:Employee] map[$or:[map[emails:map[$regex:{example\.com }]] map[emails:map[$regex:{example\.org }]]]]]]
+map[$and:[map[userType:Employee] map[$or:[map[emails:map[$regex:{example\.com }]] map[emails:map[$regex:{example\.org }]]]]]]
+map[$and:[map[userType:Employee] map[$or:[map[emails:map[$regex:{example\.com }]] map[emails:map[$regex:{example\.org }]]]]]]
+map[$and:[map[userType:Employee] map[$or:[map[emails:map[$regex:{example\.com }]] map[emails:map[$regex:{example\.org }]]]]]]
+map[$and:[map[userType:map[$ne:Employee]] map[$or:[map[emails:map[$not:map[$regex:{example\.com }]]] map[emails:map[$not:map[$regex:{example\.org }]]]]]]]
 map[$and:[map[userType:Employee] map[emails.type:work]]]
-map[$and:[map[userType:Employee] map[$and:[map[emails.type:work] map[emails.value:map[$regex:{@example.com }]]]]]]
-map[$or:[map[$and:[map[emails.type:work] map[emails.value:map[$regex:{@example.com }]]]] map[$and:[map[ims.type:xmpp] map[ims.value:map[$regex:{@foo.com }]]]]]]
+map[$and:[map[userType:Employee] map[$and:[map[emails.type:work] map[emails.value:map[$regex:{@example\.com }]]]]]]
+map[$or:[map[$and:[map[emails.type:work] map[emails.value:map[$regex:{@example\.com }]]]] map[$and:[map[ims.type:xmpp] map[ims.value:map[$regex:{@foo\.com }]]]]]]
 ```
 
 ### Memo
