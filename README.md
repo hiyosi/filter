@@ -35,7 +35,7 @@ For instance, you can use this result to arguments of bson.M
 ### Generate parser.go from parser.go.y
 
 ```
-$ cd src/filter
+$ cd filter
 $ make
 ```
 
