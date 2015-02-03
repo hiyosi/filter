@@ -15,14 +15,13 @@ func main() {
 	env := filter.Env{}
 	s := new(filter.Scanner)
 	s.Init("ham eq \"spam\"")
-	for _, statement := range filter.Parse(s) {
-		query, err := filter.Evaluate(statement, env)
-		if err != nil {
-			fmt.Printf("error")
-		}
-                
-		fmt.Printf("%s\n", query)  // result is output as string.
+	statements := filter.Parse(s)
+	query, err := filter.Evaluate(statements[0], env)
+	if err != nil {
+	        fmt.Printf("error")
 	}
+    
+	fmt.Printf("%s\n", query)  // result is output as string.
  }
 ```
 ```
