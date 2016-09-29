@@ -1,0 +1,16 @@
+language: go
+go:
+- 1.5.4
+- 1.6.2
+- 1.7.1
+- tip
+before_install:
+- go get github.com/mattn/goveralls
+- go get golang.org/x/tools/cmd/cover
+- go get labix.org/v2/mgo/bson
+script:
+- go test -v
+- $HOME/gopath/bin/goveralls -service=travis-ci
+env:
+  global:
+    secure: HWujU0uan88tfKH8uH9km6Biaq3fJOHeMvfZ9juVR1DK+jxX0NIQ2vSYyaoahxG/FMhUFntnXklFoq/RgmTc8cLwvFnqqGGMK/u+o65ZMTGDn0ud8y3CeqdJGiCAfG4ju/0ApZY6kxdrhoKuBQGG33ykMTxw7xGgN2Vh4x8hUbM=
