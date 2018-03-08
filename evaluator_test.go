@@ -85,7 +85,7 @@ func TestEvaluate(t *testing.T) {
 		tv, _ := av["ham"].(map[string]interface{})
 
 		if tv["$type"] != 10 {
-			t.Errorf("actual=%i, expect=%i", tv["$type"], 10)
+			t.Errorf("actual=%v, expect=%v", tv["$type"], 10)
 		}
 	}
 
@@ -178,7 +178,7 @@ func TestEvaluate(t *testing.T) {
 		tv, _ := sv["$ne"].(map[string]interface{})
 
 		if tv["$type"] != 10 {
-			t.Errorf("actual=%i, expect=%i", tv["$type"], 10)
+			t.Errorf("actual=%v, expect=%v", tv["$type"], 10)
 		}
 	}
 
