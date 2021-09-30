@@ -1,7 +1,6 @@
 package filter
 
 import (
-	"labix.org/v2/mgo/bson"
 	"reflect"
 	"testing"
 )
@@ -179,57 +178,6 @@ func TestEvaluate(t *testing.T) {
 
 		if tv["$type"] != 10 {
 			t.Errorf("actual=%v, expect=%v", tv["$type"], 10)
-		}
-	}
-
-	{ //ham co "spam"
-		actual, _ := Evaluate(&RegexStatement{
-			LHE:      &IdentifierExpression{"ham"},
-			Operator: "co",
-			Value:    "spam",
-		}, Env{})
-
-		sub := make(map[string]interface{})
-		sub["$regex"] = bson.RegEx{Pattern: "spam"}
-		expect := make(map[string]interface{})
-		expect["ham"] = sub
-
-		if !reflect.DeepEqual(actual, expect) {
-			t.Errorf("actual=%v, expect=%v", actual, expect)
-		}
-	}
-
-	{ //ham sw "spam"
-		actual, _ := Evaluate(&RegexStatement{
-			LHE:      &IdentifierExpression{"ham"},
-			Operator: "sw",
-			Value:    "spam",
-		}, Env{})
-
-		sub := make(map[string]interface{})
-		sub["$regex"] = bson.RegEx{Pattern: "^spam"}
-		expect := make(map[string]interface{})
-		expect["ham"] = sub
-
-		if !reflect.DeepEqual(actual, expect) {
-			t.Errorf("actual=%v, expect=%v", actual, expect)
-		}
-	}
-
-	{ //ham sw "spam"
-		actual, _ := Evaluate(&RegexStatement{
-			LHE:      &IdentifierExpression{"ham"},
-			Operator: "ew",
-			Value:    "spam",
-		}, Env{})
-
-		sub := make(map[string]interface{})
-		sub["$regex"] = bson.RegEx{Pattern: "spam$"}
-		expect := make(map[string]interface{})
-		expect["ham"] = sub
-
-		if !reflect.DeepEqual(actual, expect) {
-			t.Errorf("actual=%v, expect=%v", actual, expect)
 		}
 	}
 
@@ -411,44 +359,6 @@ func TestEvaluate(t *testing.T) {
 		}
 	}
 
-	{ // (ham eq "spam") and (foo co "bar")
-		actual, _ := Evaluate(&LogStatement{
-			LHS: &ParenStatement{
-				Operator: "",
-				SubStatement: &CompStatement{
-					LHE:      &IdentifierExpression{"ham"},
-					Operator: "eq",
-					RHE:      &AttrValueExpression{"spam"},
-				},
-			},
-			Operator: "and",
-			RHS: &ParenStatement{
-				Operator: "",
-				SubStatement: &RegexStatement{
-					LHE:      &IdentifierExpression{"foo"},
-					Operator: "co",
-					Value:    "bar",
-				},
-			},
-		}, Env{})
-
-		l := make(map[string]interface{})
-		l["ham"] = "spam"
-		rsub := make(map[string]interface{})
-		rsub["$regex"] = bson.RegEx{Pattern: "bar"}
-		r := make(map[string]interface{})
-		r["foo"] = rsub
-		expect := make(map[string]interface{})
-		var sub []interface{}
-		sub = append(sub, l, r)
-		expect["$and"] = sub
-
-		if !reflect.DeepEqual(actual, expect) {
-			t.Errorf("actual=%v, expect=%v", actual, expect)
-		}
-
-	}
-
 	{ // not (ham eq "spam")  * this statement is evaluate to 'not equal, (equal <-> not equal)'
 		actual, _ := Evaluate(&ParenStatement{
 			Operator: "not",
@@ -481,72 +391,6 @@ func TestEvaluate(t *testing.T) {
 
 		expect := make(map[string]interface{})
 		expect["ham"] = "spam"
-
-		if !reflect.DeepEqual(actual, expect) {
-			t.Errorf("actual=%v, expect=%v", actual, expect)
-		}
-	}
-
-	{ //not (ham co "spam")
-		actual, _ := Evaluate(&ParenStatement{
-			Operator: "not",
-			SubStatement: &RegexStatement{
-				LHE:      &IdentifierExpression{"ham"},
-				Operator: "co",
-				Value:    "spam",
-			},
-		}, Env{})
-
-		sub := make(map[string]interface{})
-		sub["$regex"] = bson.RegEx{Pattern: "spam"}
-		n := make(map[string]interface{})
-		n["$not"] = sub
-		expect := make(map[string]interface{})
-		expect["ham"] = n
-
-		if !reflect.DeepEqual(actual, expect) {
-			t.Errorf("actual=%v, expect=%v", actual, expect)
-		}
-	}
-
-	{ //not (ham sw "spam")
-		actual, _ := Evaluate(&ParenStatement{
-			Operator: "not",
-			SubStatement: &RegexStatement{
-				LHE:      &IdentifierExpression{"ham"},
-				Operator: "sw",
-				Value:    "spam",
-			},
-		}, Env{})
-
-		sub := make(map[string]interface{})
-		sub["$regex"] = bson.RegEx{Pattern: "^spam"}
-		n := make(map[string]interface{})
-		n["$not"] = sub
-		expect := make(map[string]interface{})
-		expect["ham"] = n
-
-		if !reflect.DeepEqual(actual, expect) {
-			t.Errorf("actual=%v, expect=%v", actual, expect)
-		}
-	}
-
-	{ //not (ham ew "spam")
-		actual, _ := Evaluate(&ParenStatement{
-			Operator: "not",
-			SubStatement: &RegexStatement{
-				LHE:      &IdentifierExpression{"ham"},
-				Operator: "ew",
-				Value:    "spam",
-			},
-		}, Env{})
-
-		sub := make(map[string]interface{})
-		sub["$regex"] = bson.RegEx{Pattern: "spam$"}
-		n := make(map[string]interface{})
-		n["$not"] = sub
-		expect := make(map[string]interface{})
-		expect["ham"] = n
 
 		if !reflect.DeepEqual(actual, expect) {
 			t.Errorf("actual=%v, expect=%v", actual, expect)
@@ -635,45 +479,6 @@ func TestEvaluate(t *testing.T) {
 		n["$not"] = sub
 		expect := make(map[string]interface{})
 		expect["ham"] = n
-
-		if !reflect.DeepEqual(actual, expect) {
-			t.Errorf("actual=%v, expect=%v", actual, expect)
-		}
-	}
-
-	{ // (ham eq "spam") and not (foo co "bar")
-		actual, _ := Evaluate(&LogStatement{
-			LHS: &ParenStatement{
-				Operator: "",
-				SubStatement: &CompStatement{
-					LHE:      &IdentifierExpression{"ham"},
-					Operator: "eq",
-					RHE:      &AttrValueExpression{"spam"},
-				},
-			},
-			Operator: "and",
-			RHS: &ParenStatement{
-				Operator: "not",
-				SubStatement: &RegexStatement{
-					LHE:      &IdentifierExpression{"foo"},
-					Operator: "co",
-					Value:    "bar",
-				},
-			},
-		}, Env{})
-
-		l := make(map[string]interface{})
-		l["ham"] = "spam"
-		rsub := make(map[string]interface{})
-		rsub["$regex"] = bson.RegEx{Pattern: "bar"}
-		n := make(map[string]interface{})
-		n["$not"] = rsub
-		r := make(map[string]interface{})
-		r["foo"] = n
-		expect := make(map[string]interface{})
-		var sub []interface{}
-		sub = append(sub, l, r)
-		expect["$and"] = sub
 
 		if !reflect.DeepEqual(actual, expect) {
 			t.Errorf("actual=%v, expect=%v", actual, expect)

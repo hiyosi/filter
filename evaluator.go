@@ -2,9 +2,6 @@ package filter
 
 import (
 	"errors"
-	"fmt"
-	"labix.org/v2/mgo/bson"
-	"regexp"
 	"time"
 )
 
@@ -173,55 +170,6 @@ func Evaluate(statement Statement, env Env) (interface{}, error) {
 				m["$not"] = m1
 			} else {
 				m["$lte"] = r
-			}
-			q[l.(string)] = m
-			return q, nil
-		default:
-			return "", nil
-		}
-	case *RegexStatement:
-		var r interface{}
-		l, err := evaluateExpr(stmt.LHE, env)
-		if err != nil {
-			return nil, err
-		}
-		if env["parentAttr"] != "" {
-			l = env["parentAttr"] + "." + l.(string)
-		}
-
-		r = stmt.Value
-
-		m := make(map[string]interface{})
-		q := make(map[string]interface{})
-
-		switch stmt.Operator {
-		case "co":
-			if notOp {
-				m1 := make(map[string]interface{})
-				m1["$regex"] = bson.RegEx{Pattern: regexp.QuoteMeta(r.(string))}
-				m["$not"] = m1
-			} else {
-				m["$regex"] = bson.RegEx{Pattern: regexp.QuoteMeta(r.(string))}
-			}
-			q[l.(string)] = m
-			return q, nil
-		case "sw":
-			if notOp {
-				m1 := make(map[string]interface{})
-				m1["$regex"] = bson.RegEx{Pattern: fmt.Sprintf("^%s", regexp.QuoteMeta(r.(string)))}
-				m["$not"] = m1
-			} else {
-				m["$regex"] = bson.RegEx{Pattern: fmt.Sprintf("^%s", regexp.QuoteMeta(r.(string)))}
-			}
-			q[l.(string)] = m
-			return q, nil
-		case "ew":
-			if notOp {
-				m1 := make(map[string]interface{})
-				m1["$regex"] = bson.RegEx{Pattern: fmt.Sprintf("%s$", regexp.QuoteMeta(r.(string)))}
-				m["$not"] = m1
-			} else {
-				m["$regex"] = bson.RegEx{Pattern: fmt.Sprintf("%s$", regexp.QuoteMeta(r.(string)))}
 			}
 			q[l.(string)] = m
 			return q, nil
